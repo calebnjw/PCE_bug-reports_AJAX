@@ -1,0 +1,31 @@
+<head>
+  <title>Bug Reports</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div id="new-bug">
+    <h1>NEW BUG REPORT</h1>
+    <div id="error-message" style="display: none"></div>
+    <div id="form-area">
+      <label for="problem">Issue: </label>
+      <input type="text" name="problem" id="problem" placeholder="Describe the problem" />
+      <br />
+      <label for="error">Error Text: </label>
+      <input type="text" name="error" id="error" placeholder="Paste error text here" />
+      <br />
+    </div>
+    <div id="submit-bug-button"></div>
+  </div>
+  <div id="all-bugs">
+    <h1>ALL BUGS</h1>
+    <div id="bug-area"></div>
+  </div>
+  <div id="new-feature">
+    <h1>NEW FEATURE</h1>
+    <label for="feature-name">Feature Name: </label>
+    <input type="text" name="feature-name" id="feature-name" placeholder="New feature name" />
+    <br />
+  </div>
+
+  <script src="script.js"></script>
+</body>
