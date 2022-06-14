@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { request, response } from 'express';
 import cookieParser from 'cookie-parser';
 import methodOverride from 'method-override';
 
@@ -8,16 +8,20 @@ import db from './models/index.mjs';
 // import controllers
 import BugController from './controllers/bugController.mjs';
 import FeatureController from './controllers/featureController.mjs';
+import UserController from './controllers/userController.mjs';
 // import routers
 import BugRouter from './routers/bugRouter.mjs';
 import FeatureRouter from './routers/featureRouter.mjs';
+import UserRouter from './routers/userRouter.mjs';
 
 // initialise controllers
 const bugController = new BugController(db.Bug, db);
 const featureController = new FeatureController(db.Feature, db);
+const userController = new UserController(db.User, db);
 // initialise routers
 const bugRouter = new BugRouter(bugController).router();
 const featureRouter = new FeatureRouter(featureController).router();
+const userRouter = new UserRouter(userController).router();
 
 // Initialise Express instance
 const app = express();
@@ -34,9 +38,23 @@ app.use(methodOverride('_method'));
 app.use(express.static('public'));
 
 // use router for routes
-app.get('/', (request, response) => response.redirect('/bugs'));
-app.use('/bugs', bugRouter);
-app.use('/features', featureRouter);
+app.use('/user', userRouter);
+
+// checking if user is logged in
+// if not, send to login page
+app.use((request, response, next) => {
+  request.userLoggedIn = false;
+
+  if (request.cookies.loggedIn && request.cookies.userID) {
+    request.userLoggedIn = true;
+  };
+
+  next();
+});
+
+app.get('/', (request, response) => response.redirect('/bug'));
+app.use('/bug', bugRouter);
+app.use('/feature', featureRouter);
 
 // Set Express to listen on the given port
 const PORT = process.env.PORT || 3004;

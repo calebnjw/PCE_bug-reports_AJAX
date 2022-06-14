@@ -7,7 +7,6 @@ export default class FeatureController extends BaseController {
   }
 
   async getFeatures(request, response) {
-    console.log(this.model);
     const featureList = await this.model.findAll();
 
     response.send(featureList);
@@ -16,7 +15,7 @@ export default class FeatureController extends BaseController {
   async newFeature(request, response) {
     try {
       const { name } = request.body;
-      console.log(name);
+      console.log('NAME:', name);
 
       await this.model.create({
         name,

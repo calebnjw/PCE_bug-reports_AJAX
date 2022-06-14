@@ -28,6 +28,14 @@ export default function initBugModel(sequelize, DataTypes) {
           key: 'id',
         },
       },
+      userId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

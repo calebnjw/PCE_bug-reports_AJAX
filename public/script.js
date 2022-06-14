@@ -1,11 +1,52 @@
+// get data from database
 const getFeatures = async () => {
-  const { data: featureList } = await axios.get('/features');
+  const { data: featureList } = await axios.get('/feature');
   return featureList;
 };
 
 const getBugs = async () => {
-  const { data: bugList } = await axios.get('/bugs/all');
+  const { data: bugList } = await axios.get('/bug/all');
   return bugList;
+};
+
+const submitBug = async () => {
+  const errorContainer = document.getElementById('error-message');
+
+  const problemText = document.querySelector('input[name="problem"]').value;
+  const errorText = document.querySelector('input[name="error"]').value;
+  const featureSel = document.querySelector('select[name="feature"]').value;
+
+  // console.log(problemText, errorText, featureSel);
+
+  if (problemText === '' || errorText === '') {
+    errorContainer.innerText = 'Please fill in the form before submitting.';
+    errorContainer.style.display = 'block';
+  } else {
+    axios.post('/bug/new', {
+      problem: problemText,
+      error: errorText,
+      feature: featureSel,
+    }).catch((error) => {
+      console.log(error);
+    });
+
+    errorContainer.style.display = 'none';
+    document.querySelector('input[name="problem"]').value = '';
+    document.querySelector('input[name="error"]').value = '';
+  }
+};
+
+const submitFeature = async () => {
+  const featureName = document.querySelector('input[name="feature-name"]').value;
+
+  axios.post('/feature/new', {
+    name: featureName,
+  }).catch((error) => {
+    console.log(error);
+  });
+
+  document.querySelector('input[name="feature-name"]').value = '';
+  window.location.href = '/';
 };
 
 const submitBugButton = () => {
@@ -61,46 +102,6 @@ const createBugList = async () => {
 
     bugArea.append(bugContainer);
   });
-};
-
-const submitBug = async () => {
-  const errorContainer = document.getElementById('error-message');
-
-  const problemText = document.querySelector('input[name="problem"]').value;
-  const errorText = document.querySelector('input[name="error"]').value;
-  const featureSel = document.querySelector('select[name="feature"]').value;
-
-  console.log(problemText, errorText, featureSel);
-
-  if (problemText === '' || errorText === '') {
-    errorContainer.innerText = 'Please fill in the form before submitting.';
-    errorContainer.style.display = 'block';
-  } else {
-    // axios.post('/bugs/new', {
-    //   problem: problemText,
-    //   error: errorText,
-    //   feature: featureSel,
-    // }).catch((error) => {
-    //   console.log(error);
-    // });
-
-    errorContainer.style.display = 'none';
-    document.querySelector('input[name="problem"]').value = '';
-    document.querySelector('input[name="error"]').value = '';
-  }
-};
-
-const submitFeature = async () => {
-  const featureName = document.querySelector('input[name="feature-name"]').value;
-
-  axios.post('/features/new', {
-    name: featureName,
-  }).catch((error) => {
-    console.log(error);
-  });
-
-  document.querySelector('input[name="feature-name"]').value = '';
-  window.location.href = '/';
 };
 
 createFeatureSelect();

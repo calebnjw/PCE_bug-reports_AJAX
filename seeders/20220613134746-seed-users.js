@@ -4,31 +4,34 @@ const { faker } = require('@faker-js/faker');
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const featureList = [
+    const userList = [
       {
-        name: faker.commerce.department(),
+        email: faker.name.findName(),
+        password: faker.word.adjective(10),
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        name: faker.commerce.department(),
+        email: faker.name.findName(),
+        password: faker.word.adjective(10),
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        name: faker.commerce.department(),
+        email: faker.name.findName(),
+        password: faker.word.adjective(10),
         created_at: new Date(),
         updated_at: new Date(),
       },
     ];
 
     await queryInterface.bulkInsert(
-      'features',
-      featureList,
+      'users',
+      userList,
     );
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('features', null, {});
+    await queryInterface.bulkDelete('users', null, {});
   },
 };
